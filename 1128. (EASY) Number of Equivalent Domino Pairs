@@ -1,0 +1,65 @@
+//BRUTE FORCE: O(n^2) & O(1)
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        int m = dominoes.length;
+        int cnt=0;
+        for(int i=0; i<m; i++){
+            for(int j=i+1; j<m; j++){
+                if((dominoes[i][0]==dominoes[j][0] && dominoes[i][1]==dominoes[j][1]) || (dominoes[i][0]==dominoes[j][1] && dominoes[i][1]==dominoes[j][0]))
+                    cnt++;
+            }
+        }
+        return cnt;
+    }
+}
+//Using MAP of string, int : O(n) & O(n)
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        Map<String, Integer> mpp = new HashMap<>();
+        //sorting all pairs in i,j s.t i<j
+        for(int[] arr: dominoes){
+            int a = arr[0];
+            int b = arr[1];
+            if(a>b){
+                //swap
+                int temp = a;
+                a=b;
+                b=temp;
+            }
+
+            //store key in string form
+            String key = a + "_" + b;
+            mpp.put(key, mpp.getOrDefault(key, 0)+1);
+        }
+
+        //count res as valc2 i.e val*(val-1)/2
+        int res =0;
+        for(int freq: mpp.values()){
+            res+= (freq*(freq-1))/2;
+        }
+        return res;
+    }
+}
+
+//Using Constant space & converting each pair into number using a*10 + b : O(n) & O(1)
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        int[] ans = new int[100];
+        int res=0;
+        for(int[] d: dominoes){
+            int a = d[0];
+            int b = d[1];
+            if(a>b){
+                int temp = a;
+                a=b;
+                b=temp;
+            }
+            int val = a*10+b;
+            res += ans[val];
+            ans[val]++;
+        }
+        return res;
+    }
+}
+
+
